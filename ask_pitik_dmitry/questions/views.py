@@ -1,33 +1,28 @@
 from django.conf.urls import url
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
-QUESTIONS = {
-    '1': {'id': 1, 'title': 'I`m your dream', 'text': 'I`m your dream, make you real'},
-    '2': {'id': 2, 'title': 'I`m your eyes', 'text': 'I`m your eyes when you must steal'},
-    '3': {'id': 3, 'title': 'I`m your pain', 'text': 'I`m your pain when you can`t feel'},
-}
-
-
-def main_func(request, main_id):
-    return render(request, 'ask.html', {'questions': QUESTIONS.values()})
+def main_func(request):
+    return render(request, 'main.html')
 
 def hot_func(request, hot_id):
-    response = "You're looking at the results of hot %s."
-    return render(request, 'hot_page.html', {'question': QUESTIONS.get(hot_id, {})})
+    return render(request, 'hot.html', {'hot_id': hot_id })
 
 def tag_func(request, tag_id):
-    return HttpResponse("You're voting on tag %s." % tag_id)
+    return render(request, 'tag.html', {'tag_id': tag_id })
 
 def question_func(request, question_id):
-    return HttpResponse("You're looking at question %s." % question_id)
+    return render(request, 'question.html', {'question_id': question_id })
 
-def login_func(request, login_id):
-    response = "You're looking at the results of login %s."
-    return HttpResponse(response % login_id)
+def login_func(request):
+    return render(request, 'login.html')
 
-def signup_func(request, signup_id):
-    return HttpResponse("You're voting on signup %s." % signup_id)
+def signup_func(request):
+    return render(request, 'register.html')
 
-def ask_func(request, ask_id):
-    return HttpResponse("You're voting on ask %s." % ask_id)
+def settings_func(request):
+    return render(request, 'settings.html')
+
+def ask_func(request):
+    return render(request, 'ask.html')
