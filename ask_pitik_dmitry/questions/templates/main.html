@@ -8,7 +8,7 @@
       <meta name="viewport" content="width=device-width, initial-scale=1">
 
         {% block title %}
-          <title>Bootstrap 101 Template</title>
+          <title>Main</title>
         {% endblock title %}
 
         <!-- Latest compiled and minified CSS -->
@@ -31,7 +31,7 @@
 
             <a class="navbar-brand" href="{% url 'main' %}">
                 {% load static %}
-                <img src="{% static "4.png" %}" width="80" height="45" class="d-inline-block align-top" alt="Go to main"
+                <img src="{% static "5.png" %}" width="60" height="60" class="d-inline-block align-top" alt="Go to main"
                      style="margin-top: -10px">
             </a>
 
@@ -74,11 +74,13 @@
 
                       <div class="panel panel-default">
                           <div class="row">
+                          {% block load_static1 %}
                               <div class="col-lg-3" style="padding-top: 10px;">
-                                  <img class="centerAvatar" src="img/avatar/lenivec.png" class="img-responsive center-block"
-                                       alt="img" width="100" height="100">
-                              </div>
 
+                                  <img class="centerAvatar" src="{% static "pig.png" %}" class="img-responsive center-block"
+                                       alt="img" width="100" height="140">
+                              </div>
+							{% endblock load_static1 %}
                               <div class="col-lg-8">
                                   <div class="row">
                                       <div class="col-lg-12 center-block">
@@ -103,10 +105,10 @@
                                           class="glyphicon glyphicon-plus"></span></button>
                               </div>
                               <div class="col-lg-8">
-                                  <a href="#" class="answers">Answers(12)</a>
+                                  <a href="{% url 'question' question_id=1 %}" class="answers">Answers(12)</a>
                                   Tags:
-                                  <a href="#" class="tag">#Moon</a>
-                                  <a href="#" class="tag">#Park</a>
+                                  <a href="{% url 'tag' tag_id=1 %}" class="tag">#Moon</a>
+                                  <a href="{% url 'tag' tag_id=1 %}" class="tag">#Park</a>
                               </div>
                           </div>
                       </div>
@@ -114,8 +116,8 @@
                       <div class="panel panel-default">
                           <div class="row">
                               <div class="col-lg-3" style="padding-top: 10px;">
-                                  <img class="centerAvatar" src="img/avatar/sid.png" class="img-responsive center-block"
-                                       alt="img" width="100" height="100">
+                                  <img class="centerAvatar" src="{% static "pig.png" %}" class="img-responsive center-block"
+                                       alt="img" width="100" height="140">
                               </div>
 
                               <div class="col-lg-8">
@@ -141,10 +143,10 @@
                                           class="glyphicon glyphicon-plus"></span></button>
                               </div>
                               <div class="col-lg-8">
-                                  <a href="#" class="answers">Answers(18)</a>
+                                  <a href="{% url 'question' question_id=1 %}" class="answers">Answers(18)</a>
                                   Tags:
-                                  <a href="#" class="tag">#Moon</a>
-                                  <a href="#" class="tag">#Park</a>
+                                  <a href="{% url 'tag' tag_id=1 %}" class="tag">#Moon</a>
+                                  <a href="{% url 'tag' tag_id=1 %}" class="tag">#Park</a>
                               </div>
                           </div>
                       </div>
@@ -152,8 +154,8 @@
                       <div class="panel panel-default">
                           <div class="row">
                               <div class="col-lg-3" style="padding-top: 10px;">
-                                  <img class="centerAvatar" src="img/avatar/lenivec_logo.png" class="img-responsive center-block"
-                                       alt="img" width="100" height="100">
+                                  <img class="centerAvatar" src="{% static "pig.png" %}" class="img-responsive center-block"
+                                       alt="img" width="100" height="140">
                               </div>
 
                               <div class="col-lg-8">
@@ -179,10 +181,10 @@
                                           class="glyphicon glyphicon-plus"></span></button>
                               </div>
                               <div class="col-lg-8">
-                                  <a href="#" class="answers">Answers(22)</a>
+                                  <a href="{% url 'question' question_id=1 %}" class="answers">Answers(22)</a>
                                   Tags:
-                                  <a href="#" class="tag">#Moon</a>
-                                  <a href="#" class="tag">#Park</a>
+                                  <a href="{% url 'tag' tag_id=1 %}" class="tag">#Moon</a>
+                                  <a href="{% url 'tag' tag_id=1 %}" class="tag">#Park</a>
                               </div>
                           </div>
                       </div>
@@ -232,12 +234,12 @@
                             <h2 id="beast_members" class="my_header">Best Members</h2>
                             <div>
                                 <ul class="list-best_members">
-                                    <li><a href="#" class="bm">Sony</a></li>
-                                    <li><a href="#" class="bm">Asus</a></li>
-                                    <li><a href="#" class="bm">Dell</a></li>
-                                    <li><a href="#" class="bm">Toshiba</a></li>
-                                    <li><a href="#" class="bm">Acer</a></li>
-                                    <li><a href="#" class="bm">Lenovo</a></li>
+                                    <li><a href="{% url 'tag' tag_id=1 %}" class="bm">Sony</a></li>
+                                    <li><a href="{% url 'tag' tag_id=1 %}" class="bm">Asus</a></li>
+                                    <li><a href="{% url 'tag' tag_id=1 %}" class="bm">Dell</a></li>
+                                    <li><a href="{% url 'tag' tag_id=1 %}" class="bm">Toshiba</a></li>
+                                    <li><a href="{% url 'tag' tag_id=1 %}" class="bm">Acer</a></li>
+                                    <li><a href="{% url 'tag' tag_id=1 %}" class="bm">Lenovo</a></li>
                                 </ul>
                             </div>
                         </div>
