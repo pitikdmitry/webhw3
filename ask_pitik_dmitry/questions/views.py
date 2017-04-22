@@ -2,6 +2,28 @@ from django.conf.urls import url
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+import fulling_sql_method
+import models.py
+
+def handle(request):
+    fillDB = fulling_sql_method.FillDB()
+    fillDB.create_func()
+    return render(request, 'main.html')
+
+def index(request):
+    questions = Question.objects.get_new_questions()
+    page = paginate(questions, request)
+    questions = page
+    popular_tags, popular_users = get_popular()
+
+    return render(request, 'index.html', {
+        'questions': questions,
+        'page': page,
+        'block_title': 'Question Day',
+        'popular_tags': popular_tags,
+        'popular_users': popular_users,
+    })
+
 
 def main_func(request):
     return render(request, 'main.html')
@@ -26,3 +48,4 @@ def settings_func(request):
 
 def ask_func(request):
     return render(request, 'ask.html')
+
