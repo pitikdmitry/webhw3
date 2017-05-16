@@ -66,7 +66,7 @@ class TagsManager(models.Manager):
     def get_tags_for_question_by_id(self, q_id):
         return self.filter(question=q_id)
 
-    def get_popular_tags(self):#делать запрос по постам и одновременно считать количество тегов в посте#
+    def get_popular_tags(self):
         return self.annotate(Count('questions')).order_by('-questions__count')[:10]
 
     def get_tag_by_name(self, tag_name):

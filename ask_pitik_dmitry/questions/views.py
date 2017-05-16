@@ -1,31 +1,23 @@
-from django.conf.urls import url
+from django.shortcuts import render, redirect, resolve_url
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-import fulling_sql_method
-from models import Profile, Questions, Tags, Answers, Like
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login
+
+from models import Questions, Answers, Tags, Profile, Like
 
 
+questions_pag = []
+for i in range(1, 5):
+    questions_pag.append({'title': 'title ' + str(i),
+                      'id': i,
+                      'text': 'text' + str(i)
+                      })
 
-def handle(request):
-    fillDB = fulling_sql_method.FillDB()
-    fillDB.create_func()
-    return render(request, 'main.html')
 
-
-def index(request):
-    questions = Question.objects.get_new_questions()
-    page = paginate(questions, request)
-    questions = page
-    popular_tags, popular_users = get_popular()
-
-    return render(request, 'index.html', {
-        'questions': questions,
-        'page': page,
-        'block_title': 'Question Day',
-        'popular_tags': popular_tags,
-        'popular_users': popular_users,
-    })
+def signup_func(request):
+    return render(request, 'register.html')
 
 
 def main_func(request):
@@ -33,7 +25,8 @@ def main_func(request):
     questions = Questions.objects.get_new_questions()
     page = paginate(questions, request)
     questions = page
-    return render(request, 'main.html', {'page': page, 'questions': questions, 'popular_tags': popular_tags})
+    return render(request, 'hot.html', {'page': page, 'questions': questions, 'popular_tags': popular_tags})
+
 
 def hot_func(request):
     popular_tags = Tags.objects.get_popular_tags()
@@ -43,30 +36,32 @@ def hot_func(request):
     return render(request, 'hot.html', {'page': page, 'questions': questions, 'popular_tags': popular_tags})
 
 
-def hot_func(request):
-    return render(request, 'hot.html' )
-
-
-def tag_func(request, tag_id):
-    return render(request, 'tag.html', {'tag_id': tag_id })
+def tag_func(request, tag_name):
+    tag = Tags.objects.get_tag_by_name(tag_name)
+    questions = Questions.objects.get_questions_by_tag(tag)
+    page = paginate(questions, request)
+    questions = page
+    return render(request, 'tag.html', {'page': page, 'questions': questions, 'tag': tag})
 
 
 def question_func(request, question_id):
-    return render(request, 'question.html', {'question_id': question_id })
+    question = Questions.objects.get_by_id(question_id)
+    answers = Answers.objects.get_answers_by_question_id(question_id)
+    return render(request, 'question.html', {'question': question,
+                                             'question_id': question_id,
+                                             'answers': answers}
+                                             )
 
 
 def login_func(request):
-    return render(request, 'login.html')
+    return render(request, 'login.html', { 'continue': resolve_url('login')})
 
 
-def signup_func(request):
-    return render(request, 'register.html')
-
-
-def settings_func(request):
+def settings(request):
     return render(request, 'settings.html')
 
 
+@login_required(login_url='/questions/login/')
 def ask_func(request):
     return render(request, 'ask.html')
 

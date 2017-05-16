@@ -1,5 +1,5 @@
 import random, string
-from models import Question, Profile, Tag, Answer
+from models import Questions, Answers, Tags, Profile, Like
 from django.contrib.auth.models import User
 
 class FillDB(object):
@@ -31,22 +31,45 @@ class FillDB(object):
 
     def ask_with_answers(self):
         self.ask()
-        self.answer_on_question(Question.objects.last().id)
+        self.answer_on_question(Questions.objects.last().id)
 
     def ask(self):
         user = None
         while user == None:
             user = Profile.objects.get(pk=random.randint(1, Profile.objects.count()))
 
-        title = ['How to boil']
-        text = ['Kettle']
+        title = []
+        text = []
+
+        for i in range(random.randint(30, 200)):
+            random_letter = random.choice(string.ascii_letters + string.digits)
+            if i % 80 == 0: title.append('\n')
+            title.append(random_letter)
+        for i in range(random.randint(100, 1000)):
+            random_letter = random.choice(string.ascii_letters + string.digits)
+            if i % 80 == 0: text.append('\n')
+            text.append(random_letter)
 
         tags = []
+
         for i in range(random.randint(1, 5)):
             tag_name = self.get_random_tag()
-            tags.append(tag_name)
+            try:
+                tag = Tags.objects.get_tag_by_name(tag_name)
+            except Tags.DoesNotExist:
+                tag = None
 
-        q = Question.objects.create(user=user, title=''.join(title), text=''.join(text), rating=random.randint(0, 10))
+            if tag != None:
+                tags.append(tag)
+            else:
+                new_tag = Tags.objects.create(name=tag_name)
+                new_tag.save()
+                new_tag = Tags.objects.get_tag_by_name(new_tag.name)
+                tags.append(new_tag)
+
+        q = Questions.objects.create(user=user, title=''.join(title), text=''.join(text), rating=random.randint(0, 10))
+        for tag in tags:
+            q.tag.add(tag)
         q.save()
 
     def answer_on_question(self, q_id):
@@ -55,7 +78,7 @@ class FillDB(object):
             while user == None:
                 user = Profile.objects.get(pk=random.randint(1, Profile.objects.count()))
 
-            question = Question.objects.get(pk=q_id)
+            question = Questions.objects.get(pk=q_id)
             text = []
 
             for i in range(random.randint(100, 500)):
@@ -63,10 +86,5 @@ class FillDB(object):
                 if i % 80 == 0: text.append('\n')
                 text.append(random_letter)
 
-            a = Answer.objects.create(user=user, question=question, text=''.join(text), rating=random.randint(0, 10))
+            a = Answers.objects.create(user=user, question=question, text=''.join(text), rating=random.randint(0, 10))
             a.save()
-
-    def create_func(self):
-        self.create_user()
-        self.create_profile()
-        self.ask_with_answers()
